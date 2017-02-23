@@ -30,10 +30,12 @@ export class Dbmanager {
   }
   getTodos() {
     if (this.data) {
+      console.log('gettodos if this.data');
       return Promise.resolve(this.data);
     }
 
     return new Promise(resolve => {
+      console.log('getTodos if !this.data');
       this.db.allDocs({
 
         include_docs: true
@@ -46,11 +48,10 @@ export class Dbmanager {
           this.data.push(row.doc);
         });
 
-        resolve(this.data);
-
         this.db.changes({ live: true, since: 'now', include_docs: true }).on('change', (change) => {
           this.handleChange(change);
         });
+        resolve(this.data);
 
       }).catch((error) => {
 
@@ -75,7 +76,7 @@ export class Dbmanager {
     });
   }
   handleChange(change) {
-
+    
     let changedDoc = null;
     let changedIndex = null;
 
@@ -103,6 +104,7 @@ export class Dbmanager {
       else {
         this.data.push(change.doc);
       }
+      console.log('handle');
       console.log(this.data);
     }
 

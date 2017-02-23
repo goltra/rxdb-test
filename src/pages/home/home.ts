@@ -19,11 +19,16 @@ export class HomePage {
  
     this.todoService.getTodos().then((data) => {
       this.todos = data;
+      console.log('home ionViewLoad');
       console.log(data);
     });
- 
+    setInterval(()=>{console.log('');},5000);
   }
- 
+  test(){
+    console.log('test');
+    
+    this.todos.push({'title':'prueba'});
+  }
   createTodo(){
  
     let prompt = this.alertCtrl.create({
@@ -79,6 +84,8 @@ export class HomePage {
     });
  
     prompt.present();
+    console.log('update home');
+    console.log(this.todos);
   }
  
   deleteTodo(todo){
