@@ -18,7 +18,7 @@ export class Dbmanager {
 
   constructor(public http: Http) {
     this.db = new PouchDB('cloudo');
-    this.remote = 'http://localhost:5984/pruebasdb'
+    this.remote = 'http://peliculasdescargartorrent.com:5984/pruebasdb'
 
     let options = {
       live: true,
@@ -103,7 +103,7 @@ export class Dbmanager {
       else {
         this.data.push(change.doc);
       }
-
+      console.log(this.data);
     }
 
   }

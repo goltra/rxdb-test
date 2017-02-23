@@ -19,6 +19,7 @@ export class HomePage {
  
     this.todoService.getTodos().then((data) => {
       this.todos = data;
+      console.log(data);
     });
  
   }
