@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      Contact
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]='form' (ngSubmit)="submit()">
+    <ion-label>Nombre</ion-label>
+    <ion-input formControlName="nombre"></ion-input>
+    
+    <ion-label>Direccion</ion-label>
+    <ion-input formControlName="direccion"></ion-input>
+
+    <ion-label>Localidad</ion-label>
+    <ion-input formControlName="localidad"></ion-input>
+
+    <button type="submit"> Enviar </button>
+  </form>
+</ion-content>
