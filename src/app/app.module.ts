@@ -4,6 +4,8 @@ import { MyApp } from './app.component';
 import { AboutPage } from '../pages/about/about';
 import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
+import { LoginPage } from '../pages/login/login';
+import { SignupPage } from '../pages/login/signup';
 import { ClienteEditar } from '../pages/contact/clienteeditar';
 import { TabsPage } from '../pages/tabs/tabs';
 import { Dbmanager } from '../providers/dbmanager';
@@ -15,6 +17,8 @@ import { Dbmanager } from '../providers/dbmanager';
     ContactPage,
     HomePage,
     TabsPage,
+    LoginPage,
+    SignupPage,
     ClienteEditar
   ],
   imports: [
@@ -27,7 +31,9 @@ import { Dbmanager } from '../providers/dbmanager';
     ContactPage,
     HomePage,
     TabsPage,
-    ClienteEditar
+    ClienteEditar,
+    LoginPage,
+    SignupPage,
   ],
   providers: [Dbmanager,{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })

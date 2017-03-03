@@ -15,18 +15,45 @@ export class Dbmanager {
   data: any;
   db: any;
   remote: any;
+  private _user:string="";
 
   constructor(public http: Http) {
+
+  }
+
+  init(details: any = null) {
+
     this.db = new PouchDB('cloudo');
-    this.remote = 'http://peliculasdescargartorrent.com:5984/pruebasdb'
+    console.log(details);
+    this.remote = details.userDBs.bd;
+    this._user = details.user_id;
+
 
     let options = {
       live: true,
       retry: true,
-      continuous: true,
-    }
-
+      continuous: true
+    };
+    console.log('dbmanager remote');
+    console.log(this.remote);
     this.db.sync(this.remote, options);
+
+    console.log(this.db);
+
+  }
+  get user():string {
+    return this._user;
+  }
+  logout() {
+    this.destroyDb();
+  }
+  destroyDb() {
+    this.data = null;
+    if (this.db){
+      this.db.destroy().then(() => {
+        console.log("database removed");
+      });
+    }
   }
   getTodos() {
     if (this.data) {
@@ -76,7 +103,7 @@ export class Dbmanager {
     });
   }
   handleChange(change) {
-    
+
     let changedDoc = null;
     let changedIndex = null;
 
