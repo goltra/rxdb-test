@@ -16,6 +16,7 @@ export class Dbmanager {
   db: any;
   remote: any;
   private _user:string="";
+  private _empresa:string="";
 
   constructor(public http: Http) {
 
@@ -24,9 +25,11 @@ export class Dbmanager {
   init(details: any = null) {
 
     this.db = new PouchDB('cloudo');
-    console.log(details);
-    this.remote = details.userDBs.bd;
+
+    let bd = details.userDBs[Object.keys(details.userDBs)[0]];
+    this.remote = bd;
     this._user = details.user_id;
+    this._empresa = details.profile.empresa;
 
 
     let options = {
@@ -43,6 +46,9 @@ export class Dbmanager {
   }
   get user():string {
     return this._user;
+  }
+  get empresa():string {
+    return this._empresa;
   }
   logout() {
     this.destroyDb();

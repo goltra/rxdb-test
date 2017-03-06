@@ -4,21 +4,21 @@ var bodyParser = require('body-parser');
 var logger = require('morgan');
 var cors = require('cors');
 var SuperLogin = require('superlogin');
- 
+
 var app = express();
 app.set('port', process.env.PORT || 3000);
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
- 
-app.use(function(req, res, next) {
-   res.header("Access-Control-Allow-Origin", "*");
-   res.header('Access-Control-Allow-Methods', 'DELETE, PUT');
-   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-   next();
+
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header('Access-Control-Allow-Methods', 'DELETE, PUT');
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
 });
- 
+
 var config = {
   dbServer: {
     protocol: 'http://',
@@ -32,10 +32,10 @@ var config = {
     fromEmail: 'gmail.user@gmail.com',
     options: {
       service: 'Gmail',
-        auth: {
-          user: 'gmail.user@gmail.com',
-          pass: 'userpass'
-        }
+      auth: {
+        user: 'gmail.user@gmail.com',
+        pass: 'userpass'
+      }
     }
   },
   security: {
@@ -44,36 +44,54 @@ var config = {
     tokenLife: 86400,
     loginOnRegistration: true,
   },
-  userModel:{
-    whitelist:['profile.empresa','profile.typeuser']
+  userModel: {
+    whitelist: ['profile.empresa', 'profile.typeuser']
   },
-  providers: { 
+  providers: {
     local: true
   }
 }
-function a(){
+function a() {
   console.log(' esto es a y b y c');
 }
 
 // Initialize SuperLogin 
 var superlogin = new SuperLogin(config);
 
-function associateDB(userDoc){
-  if(userDoc){
+function associateDB(userDoc) {
+  if (userDoc) {
     console.log('***associateDB*** ');
     console.log(userDoc.profile.empresa);
-   superlogin.addUserDB(userDoc._id,userDoc.profile.empresa,'shared'); 
+    superlogin.addUserDB(userDoc._id, userDoc.profile.empresa, 'shared');
     console.log('***--associateDB--*** ');
   }
 }
-superlogin.onCreate(function(userDoc,provider){
-  associateDB(userDoc);
+superlogin.onCreate(function (userDoc, provider) {
+  return new Promise(function (resolve) {
+    var userDBs = {
+      // These databases will be set up automatically for each new user
+      defaultDBs: {
+        // Shared databases that you want the user to be authorized to use. These will not be prefixed, so type the exact name.
+        shared: [userDoc.profile.empresa]
+      },
+    };
+    console.log(userDoc);
+    console.log('resolve promise onCreate');
+    
+    var empresa = userDoc.profile.empresa;
+    userDoc.personalDBs={[empresa]:{
+      name: empresa,
+      type: 'shared'
+    }};
+    console.log(userDoc);
+    resolve(userDoc);
+  });
 });
-superlogin.on('signup',function(userDoc,provider){
+superlogin.on('signup', function (userDoc, provider) {
   console.log('****signup evento****');
-  
+
   console.log('****--signup evento--****');
-}) 
+})
 // Mount SuperLogin's routes to our app 
 app.use('/auth', superlogin.router);
 
