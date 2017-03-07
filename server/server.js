@@ -68,16 +68,12 @@ function associateDB(userDoc) {
 }
 superlogin.onCreate(function (userDoc, provider) {
   return new Promise(function (resolve) {
-    var userDBs = {
-      // These databases will be set up automatically for each new user
-      defaultDBs: {
-        // Shared databases that you want the user to be authorized to use. These will not be prefixed, so type the exact name.
-        shared: [userDoc.profile.empresa]
-      },
-    };
     console.log(userDoc);
     console.log('resolve promise onCreate');
-    
+    superlogin.userDB.query('auth/username',{key:userDoc.username})
+    .then(function(result){
+      console.log(result.rows);
+    });
     var empresa = userDoc.profile.empresa;
     userDoc.personalDBs={[empresa]:{
       name: empresa,
