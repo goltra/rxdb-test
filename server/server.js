@@ -70,10 +70,13 @@ superlogin.onCreate(function (userDoc, provider) {
   return new Promise(function (resolve) {
     console.log(userDoc);
     console.log('resolve promise onCreate');
+
+    //prueba query desde server
     superlogin.userDB.query('auth/username',{key:userDoc.username})
     .then(function(result){
       console.log(result.rows);
     });
+    //************************ */
     var empresa = userDoc.profile.empresa;
     userDoc.personalDBs={[empresa]:{
       name: empresa,
