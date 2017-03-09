@@ -45,7 +45,7 @@ var config = {
     loginOnRegistration: true,
   },
   userModel: {
-    whitelist: ['profile.empresa', 'profile.typeuser']
+    whitelist: ['profile.empresa', 'profile.tipoCuenta']
   },
   providers: {
     local: true
@@ -58,35 +58,36 @@ function a() {
 // Initialize SuperLogin 
 var superlogin = new SuperLogin(config);
 
-function associateDB(userDoc) {
-  if (userDoc) {
-    console.log('***associateDB*** ');
-    console.log(userDoc.profile.empresa);
-    superlogin.addUserDB(userDoc._id, userDoc.profile.empresa, 'shared');
-    console.log('***--associateDB--*** ');
-  }
-}
 superlogin.onCreate(function (userDoc, provider) {
   return new Promise(function (resolve) {
     console.log(userDoc);
     console.log('resolve promise onCreate');
     var empresa = (userDoc.profile!=undefined ? userDoc.profile.empresa : 'ninguna');
-    var tipoCuenta = (userDoc.profile!=undefined) ? userDoc.profile.tipo:'ninguno';
+    var tipoCuenta = (userDoc.profile!=undefined) ? userDoc.profile.tipoCuenta:'ninguno';
+    var ok =true;
+    var err;
     console.log('tipo: ' + tipoCuenta);
     var k = [empresa,tipoCuenta]
     //prueba query desde server
     superlogin.userDB.query('goltra/empresa',{key:k})
     .then(function(result){
+      if(result.rows.length>0){
+        console.log('error, mas de una bd para la empresa');
+        err = {name:"Database already exist for an account",message:"No puede crear esa empresa porque ya existe"};
+        ok=false;
+      }
       console.log("Numero de empresas con el nombre " + empresa + ": " + result.rows.length);
     });
-    //************************ */
-    
+    //**************************/
     userDoc.personalDBs={[empresa]:{
       name: empresa,
       type: 'shared'
     }};
     console.log(userDoc);
-    resolve(userDoc);
+    if(ok)
+      resolve(userDoc);
+    else
+      reject(err);
   });
 });
 // superlogin.on('signup', function (userDoc, provider) {

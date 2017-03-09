@@ -22,12 +22,12 @@ export class SignupPage {
   }
   
   register(){
- 
+      let tipoCuenta = 'cuenta';
       let headers = new Headers();
       headers.append('Content-Type', 'application/json');
       let profileUsr={
-        tipo: 'cuenta',
-        empresas: this.empresa
+        tipoCuenta: tipoCuenta,
+        empresa: this.empresa
       };
       let user = {
         name: this.name,
@@ -43,7 +43,7 @@ export class SignupPage {
       this.http.post('http://localhost:3000/auth/register', JSON.stringify(user), {headers: headers})
         .subscribe(res => {
           this.todoService.init(res.json());
-          this.nav.setRoot(HomePage);
+          //this.nav.setRoot(HomePage);
         }, (err) => {
           console.log(err);
         }); 
