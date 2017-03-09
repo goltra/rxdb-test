@@ -26,7 +26,8 @@ export class SignupPage {
       let headers = new Headers();
       headers.append('Content-Type', 'application/json');
       let profileUsr={
-        empresa: this.empresa
+        tipo: 'cuenta',
+        empresas: this.empresa
       };
       let user = {
         name: this.name,

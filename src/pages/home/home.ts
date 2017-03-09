@@ -42,7 +42,7 @@ export class HomePage {
   registerPartner() {
     let header = new Headers();
     header.append('Content-Type', 'application/json');
-    let profileUsr = { empresa: this.todoService.empresa };
+    let profileUsr = { empresa: this.todoService.empresa, tipoCuenta: 'colaborador' };
     let nom:string = (Math.random()).toString();
     let user = {
       name: 'nombre partner',

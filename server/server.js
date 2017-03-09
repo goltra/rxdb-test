@@ -70,14 +70,17 @@ superlogin.onCreate(function (userDoc, provider) {
   return new Promise(function (resolve) {
     console.log(userDoc);
     console.log('resolve promise onCreate');
-
+    var empresa = (userDoc.profile!=undefined ? userDoc.profile.empresa : 'ninguna');
+    var tipoCuenta = (userDoc.profile!=undefined) ? userDoc.profile.tipo:'ninguno';
+    console.log('tipo: ' + tipoCuenta);
+    var k = [empresa,tipoCuenta]
     //prueba query desde server
-    superlogin.userDB.query('auth/username',{key:userDoc.username})
+    superlogin.userDB.query('goltra/empresa',{key:k})
     .then(function(result){
-      console.log(result.rows);
+      console.log("Numero de empresas con el nombre " + empresa + ": " + result.rows.length);
     });
     //************************ */
-    var empresa = userDoc.profile.empresa;
+    
     userDoc.personalDBs={[empresa]:{
       name: empresa,
       type: 'shared'
@@ -86,11 +89,11 @@ superlogin.onCreate(function (userDoc, provider) {
     resolve(userDoc);
   });
 });
-superlogin.on('signup', function (userDoc, provider) {
-  console.log('****signup evento****');
+// superlogin.on('signup', function (userDoc, provider) {
+//   console.log('****signup evento****');
 
-  console.log('****--signup evento--****');
-})
+//   console.log('****--signup evento--****');
+// })
 // Mount SuperLogin's routes to our app 
 app.use('/auth', superlogin.router);
 
