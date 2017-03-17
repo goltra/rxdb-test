@@ -59,35 +59,43 @@ function a() {
 var superlogin = new SuperLogin(config);
 
 superlogin.onCreate(function (userDoc, provider) {
-  return new Promise(function (resolve) {
+  return new Promise(function (resolve, reject) {
     console.log(userDoc);
     console.log('resolve promise onCreate');
-    var empresa = (userDoc.profile!=undefined ? userDoc.profile.empresa : 'ninguna');
-    var tipoCuenta = (userDoc.profile!=undefined) ? userDoc.profile.tipoCuenta:'ninguno';
-    var ok =true;
+    var empresa = (userDoc.profile != undefined ? userDoc.profile.empresa : 'ninguna');
+    var tipoCuenta = (userDoc.profile != undefined) ? userDoc.profile.tipoCuenta : 'ninguno';
+    var ok = true;
     var err;
     console.log('tipo: ' + tipoCuenta);
-    var k = [empresa,tipoCuenta]
+    var k = [empresa, tipoCuenta]
     //prueba query desde server
-    superlogin.userDB.query('goltra/empresa',{key:k})
-    .then(function(result){
-      if(result.rows.length>0){
-        console.log('error, mas de una bd para la empresa');
-        err = {name:"Database already exist for an account",message:"No puede crear esa empresa porque ya existe"};
-        ok=false;
-      }
-      console.log("Numero de empresas con el nombre " + empresa + ": " + result.rows.length);
-    });
+    superlogin.userDB.query('goltra/empresa', { key: k })
+      .then(function (result) {
+        if (result.rows.length > 0) {
+          console.log('error, mas de una bd para la empresa');
+          err = { status: 400,error:"Database already exist for an account", message: "No puede crear esa empresa porque ya existe" };
+          ok = false;
+        }
+
+        console.log("Numero de empresas con el nombre " + empresa + ": " + (result.rows.length > 0 ? result.rows[0].value : 0));
+
+        userDoc.personalDBs = {
+          [empresa]: {
+            name: empresa,
+            type: 'shared'
+          }
+        };
+
+        console.log('Ok vale ');
+        console.log(ok);
+
+        if (ok)
+          resolve(userDoc);
+        else
+          reject(err);
+      });
     //**************************/
-    userDoc.personalDBs={[empresa]:{
-      name: empresa,
-      type: 'shared'
-    }};
-    console.log(userDoc);
-    if(ok)
-      resolve(userDoc);
-    else
-      reject(err);
+
   });
 });
 // superlogin.on('signup', function (userDoc, provider) {

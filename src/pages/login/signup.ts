@@ -3,6 +3,7 @@ import { Http, Headers } from '@angular/http';
 import { NavController } from 'ionic-angular';
 import { HomePage } from '../home/home';
 import { Dbmanager } from '../../providers/dbmanager';
+import 'rxjs/add/operator/catch';
  
 @Component({
   selector: 'page-signup',
@@ -38,15 +39,20 @@ export class SignupPage {
         profile: profileUsr
       };
  
-      console.log(user);
+
 
       this.http.post('http://localhost:3000/auth/register', JSON.stringify(user), {headers: headers})
         .subscribe(res => {
+          console.log('signup register');
           this.todoService.init(res.json());
-          //this.nav.setRoot(HomePage);
-        }, (err) => {
+          //this.nav.setRoot(HomePage); 
+        },err=>{
+          var obj = JSON.parse(err._body)
           console.log(err);
-        }); 
+          console.log('Error signinup');
+          alert(obj.error);
+          
+        })
  
   }
  
