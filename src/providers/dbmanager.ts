@@ -27,7 +27,9 @@ export class Dbmanager {
     this.db = new PouchDB('cloudo');
 
     let bd = details.userDBs[Object.keys(details.userDBs)[0]];
-    this.remote = bd;
+    console.log('bd: ' + bd);
+    //this.remote = bd;
+    this.remote = "http://zHMfY9QmQPuW8ZFGZ2310Q:tyxeBN1DRuWrmKtA774jYQ@localhost:5984/goltratec";
     this._user = details.user_id;
     this._empresa = details.profile.empresa;
     
