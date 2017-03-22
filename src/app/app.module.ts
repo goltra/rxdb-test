@@ -1,5 +1,6 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { IonicStorageModule } from 'ionic-storage';
 import { MyApp } from './app.component';
 import { AboutPage } from '../pages/about/about';
 import { ContactPage } from '../pages/contact/contact';
@@ -9,6 +10,7 @@ import { SignupPage } from '../pages/login/signup';
 import { ClienteEditar } from '../pages/contact/clienteeditar';
 import { TabsPage } from '../pages/tabs/tabs';
 import { Dbmanager } from '../providers/dbmanager';
+import { Settings } from '../providers/settings';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,8 @@ import { Dbmanager } from '../providers/dbmanager';
     ClienteEditar
   ],
   imports: [
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -35,6 +38,6 @@ import { Dbmanager } from '../providers/dbmanager';
     LoginPage,
     SignupPage,
   ],
-  providers: [Dbmanager,{provide: ErrorHandler, useClass: IonicErrorHandler}]
+  providers: [Dbmanager,Settings,{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
 export class AppModule {}

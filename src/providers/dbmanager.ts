@@ -30,18 +30,17 @@ export class Dbmanager {
     this.remote = bd;
     this._user = details.user_id;
     this._empresa = details.profile.empresa;
-
+    
+    console.log('details user');
+    console.log(details);
 
     let options = {
       live: true,
       retry: true,
       continuous: true
     };
-    console.log('dbmanager remote');
-    console.log(this.remote);
+    
     this.db.sync(this.remote, options);
-
-    console.log(this.db);
 
   }
   get user():string {
