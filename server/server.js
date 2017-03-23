@@ -103,6 +103,14 @@ superlogin.onCreate(function (userDoc, provider) {
 
 //   console.log('****--signup evento--****');
 // })
+
+
+app.get('/add-uuid',function(req,res){
+  
+  console.log(req.query.uuid);
+  res.send('guardado' + req.query.uuid);
+});
+
 // Mount SuperLogin's routes to our app 
 app.use('/auth', superlogin.router);
 

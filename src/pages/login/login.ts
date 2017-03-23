@@ -21,6 +21,7 @@ export class LoginPage {
 
   login() {
     console.log('login');
+    var uuid: string = "buscar metodo para calcularlo incluso en navegador";
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
 
@@ -35,7 +36,10 @@ export class LoginPage {
           var login: any = res.json();
           this.settings.token = login.profile.token;
           this.settings.password = login.profile.password;
-
+          this.http.get('http://localhost:3000/add-uuid?uuid=' + uuid)
+          .subscribe((res)=>{
+            console.log(res);
+          });
           this.todoService.init(login);
           this.nav.setRoot(HomePage);
         }, (err) => {
