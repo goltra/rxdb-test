@@ -15,7 +15,7 @@ export class Settings {
 
   constructor(storage: Storage) {
     console.log('Hello Settings Provider');
-    storage.ready().then(() => {
+    storage.ready().then(()=>{
       this.stor = storage;
       this.stor.get('token').then((val) => {
         this._token = val;
@@ -23,20 +23,30 @@ export class Settings {
       this.stor.get('password').then((val) => {
         this._password = val;
       });
-    }
-    );
+    })
+      
+    
   }
+
   get token(): string {
     return this._token;
   }
+
   get password(): string {
     return this._password;
   }
+
   set token(value: string) {
-    this.stor.set('token', value);
+    console.log('settings.set token ' + value);
+    this.stor.set('token', value).then((res)=>{
+      console.log('token guardado');
+      console.log(res);
+    });
     this._token = value;
   }
+
   set password(value: string) {
+    console.log('settings.set password');
     this.stor.set('password', value);
     this._password = value;
   }

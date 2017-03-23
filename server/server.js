@@ -113,6 +113,10 @@ app.get('/add-uuid',function(req,res){
 
 // Mount SuperLogin's routes to our app 
 app.use('/auth', superlogin.router);
+app.get('/a',function(){
+  console.log('has llamado a /a');
+  console.log(superlogin.userDB);
+});
 
 app.listen(app.get('port'));
 console.log("App listening on " + app.get('port'));
